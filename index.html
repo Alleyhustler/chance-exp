@@ -5,52 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rug Roulette | High Stakes Liquidity Game</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rowdies:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #FF3366;
-            --secondary: #7000FF;
-            --tertiary: #00E0FF;
-            --dark: #080A1A;
-            --light: #F5F5FF;
-            --success: #00E676;
-            --warning: #FFEA00;
-            --danger: #FF3366;
+            --primary: #000000; /* Black for a serious tone */
+            --secondary: #333333; /* Dark gray for contrast */
+            --tertiary: #666666; /* Medium gray for accents */
+            --dark: #FFFFFF; /* White background */
+            --light: #000000; /* Black text for contrast */
+            --success: #00C853; /* Green for success states */
+            --warning: #FFAB00; /* Amber for warnings */
+            --danger: #D50000; /* Red for errors/danger */
         }
-
+    
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: "Rowdies", sans-serif;
         }
-
+    
         body {
-            background-color: var(--dark);
-            color: var(--light);
+            background-color: var(--dark); /* White background */
+            color: var(--light); /* Black text */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
         }
-
+    
         .container {
             width: 100%;
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 1.5rem;
         }
-
+    
         header {
-            padding: 1.5rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.1rem  0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Subtle border */
         }
-
+    
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
+    
         .logo {
             display: flex;
             align-items: center;
@@ -58,24 +59,21 @@
             font-size: 1.5rem;
             font-weight: 700;
         }
-
+    
         .logo span {
-            background: linear-gradient(to right, var(--primary), var(--tertiary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            color: var(--primary); /* Black text */
         }
-
+    
         .logo img {
-            height: 40px;
+            height: 90px;
         }
-
+    
         .connect-btn {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: white;
+            background: var(--primary); /* Black button */
+            color: var(--dark); /* White text */
             border: none;
             padding: 0.75rem 1.5rem;
-            border-radius: 100px;
+            border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -83,123 +81,120 @@
             align-items: center;
             gap: 0.5rem;
         }
-
+    
         .connect-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 51, 102, 0.3);
+            background: var(--secondary); /* Dark gray on hover */
         }
-
+    
         .connect-btn.connected {
-            background: linear-gradient(to right, var(--success), var(--tertiary));
+            background: var(--success); /* Green when connected */
         }
-
+    
         main {
             flex: 1;
             padding: 3rem 0;
         }
-
+    
         .hero {
             text-align: center;
             margin-bottom: 3rem;
         }
-
+    
         h1 {
-            font-size: 3.5rem;
+            font-size: 3rem;
             margin-bottom: 1rem;
-            background: linear-gradient(to right, var(--primary), var(--tertiary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            color: var(--primary); /* Black text */
+            font-weight: 700;
         }
-
+    
         .hero p {
             font-size: 1.25rem;
             max-width: 600px;
             margin: 0 auto;
-            color: rgba(255, 255, 255, 0.7);
+            color: var(--secondary); /* Dark gray text */
         }
-
+    
         .stats-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
             margin-bottom: 3rem;
         }
-
+    
         .stat-card {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 16px;
+            background: var(--dark); /* White background */
+            border-radius: 8px;
             padding: 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.1); /* Subtle border */
             text-align: center;
             transition: all 0.3s ease;
         }
-
+    
         .stat-card:hover {
             transform: translateY(-5px);
-            border-color: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
-
+    
         .stat-card h3 {
             font-size: 1rem;
             margin-bottom: 0.5rem;
-            color: rgba(255, 255, 255, 0.7);
+            color: var(--secondary); /* Dark gray text */
         }
-
+    
         .stat-card .value {
             font-size: 2rem;
             font-weight: 700;
+            color: var(--primary); /* Black text */
         }
-
+    
         .pool-value {
-            color: var(--tertiary);
+            color: var(--tertiary); /* Medium gray */
         }
-
+    
         .time-remaining {
-            color: var(--warning);
+            color: var(--warning); /* Amber */
         }
-
+    
         .participants {
-            color: var(--primary);
+            color: var(--primary); /* Black */
         }
-
+    
         .voting-section {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 16px;
+            background: var(--dark); /* White background */
+            border-radius: 8px;
             padding: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.1); /* Subtle border */
             margin-bottom: 3rem;
         }
-
+    
         .voting-header {
             text-align: center;
             margin-bottom: 2rem;
         }
-
+    
         .voting-header h2 {
             font-size: 2rem;
             margin-bottom: 0.5rem;
+            color: var(--primary); /* Black text */
         }
-
+    
         .voting-header p {
-            color: rgba(255, 255, 255, 0.7);
+            color: var(--secondary); /* Dark gray text */
         }
-
+    
         .voting-options {
             display: flex;
             justify-content: center;
             gap: 2rem;
             margin-bottom: 2rem;
         }
-
+    
         .vote-btn {
             background: transparent;
-            color: white;
-            border: 2px solid;
+            color: var(--primary); /* Black text */
+            border: 2px solid var(--primary); /* Black border */
             padding: 1rem 2rem;
-            border-radius: 100px;
+            border-radius: 8px;
             font-size: 1.25rem;
             font-weight: 700;
             cursor: pointer;
@@ -209,81 +204,82 @@
             align-items: center;
             min-width: 160px;
         }
-
+    
         .vote-btn span {
             font-size: 0.875rem;
             margin-top: 0.25rem;
-            opacity: 0.7;
+            color: var(--secondary); /* Dark gray text */
         }
-
+    
         .vote-btn.rug {
-            border-color: var(--danger);
-            color: var(--danger);
+            border-color: var(--danger); /* Red border */
+            color: var(--danger); /* Red text */
         }
-
+    
         .vote-btn.rug:hover, .vote-btn.rug.active {
-            background-color: var(--danger);
-            color: white;
+            background-color: var(--danger); /* Red background */
+            color: var(--dark); /* White text */
         }
-
+    
         .vote-btn.hodl {
-            border-color: var(--success);
-            color: var(--success);
+            border-color: var(--success); /* Green border */
+            color: var(--success); /* Green text */
         }
-
+    
         .vote-btn.hodl:hover, .vote-btn.hodl.active {
-            background-color: var(--success);
-            color: white;
+            background-color: var(--success); /* Green background */
+            color: var(--dark); /* White text */
         }
-
+    
         .vote-progress {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.1); /* Light gray background */
             height: 10px;
-            border-radius: 100px;
+            border-radius: 8px;
             overflow: hidden;
             margin-bottom: 1rem;
         }
-
+    
         .vote-bar {
             height: 100%;
             width: 30%;
-            background: linear-gradient(to right, var(--danger), var(--primary));
+            background: var(--primary); /* Black progress bar */
             transition: width 0.5s ease;
         }
-
+    
         .vote-percentages {
             display: flex;
             justify-content: space-between;
             font-size: 0.875rem;
-            color: rgba(255, 255, 255, 0.7);
+            color: var(--secondary); /* Dark gray text */
         }
-
+    
         .history-section {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 16px;
+            background: var(--dark); /* White background */
+            border-radius: 8px;
             padding: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.1); /* Subtle border */
         }
-
+    
         .history-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1.5rem;
         }
-
+    
         .history-header h2 {
             font-size: 2rem;
+            color: var(--primary); /* Black text */
         }
-
+    
         .tabs {
             display: flex;
             gap: 1rem;
         }
-
+    
         .tab {
             background: transparent;
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--secondary); /* Dark gray text */
             border: none;
             padding: 0.5rem 1rem;
             font-weight: 600;
@@ -291,77 +287,80 @@
             border-bottom: 2px solid transparent;
             transition: all 0.3s ease;
         }
-
+    
         .tab.active {
-            color: white;
-            border-bottom-color: var(--primary);
+            color: var(--primary); /* Black text */
+            border-bottom-color: var(--primary); /* Black underline */
         }
-
+    
         .history-content {
             max-height: 300px;
             overflow-y: auto;
         }
-
+    
         .history-content::-webkit-scrollbar {
             width: 5px;
         }
-
+    
         .history-content::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.05); /* Light gray track */
+            border-radius: 8px;
         }
-
+    
         .history-content::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.2); /* Dark gray thumb */
+            border-radius: 8px;
         }
-
+    
         .history-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 1rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Subtle border */
         }
-
+    
         .history-item:last-child {
             border-bottom: none;
         }
-
+    
         .history-round {
             font-weight: 600;
+            color: var(--primary); /* Black text */
         }
-
+    
         .history-result {
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
-
+    
         .history-result.rug {
-            color: var(--danger);
+            color: var(--danger); /* Red text */
         }
-
+    
         .history-result.hodl {
-            color: var(--success);
+            color: var(--success); /* Green text */
         }
-
+    
         .history-amount {
             font-weight: 600;
+            color: var(--primary); /* Black text */
         }
-
+    
         .history-address {
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--secondary); /* Dark gray text */
             font-size: 0.875rem;
             font-family: monospace;
         }
-
+    
         footer {
-            background: rgba(0, 0, 0, 0.2);
+            background: var(--dark); /* White background */
             padding: 2rem 0;
             margin-top: auto;
+            border-top: 1px solid rgba(0, 0, 0, 0.1); /* Subtle border */
         }
-
+    
         .footer-content {
             display: flex;
             justify-content: space-between;
@@ -369,44 +368,44 @@
             flex-wrap: wrap;
             gap: 1rem;
         }
-
+    
         .footer-links {
             display: flex;
             gap: 1.5rem;
         }
-
+    
         .footer-links a {
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--secondary); /* Dark gray text */
             text-decoration: none;
             transition: color 0.3s ease;
         }
-
+    
         .footer-links a:hover {
-            color: var(--primary);
+            color: var(--primary); /* Black text on hover */
         }
-
+    
         .social-links {
             display: flex;
             gap: 1rem;
         }
-
+    
         .social-links a {
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--secondary); /* Dark gray text */
             font-size: 1.25rem;
             transition: color 0.3s ease;
         }
-
+    
         .social-links a:hover {
-            color: var(--primary);
+            color: var(--primary); /* Black text on hover */
         }
-
+    
         .modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -415,82 +414,80 @@
             visibility: hidden;
             transition: all 0.3s ease;
         }
-
+    
         .modal.active {
             opacity: 1;
             visibility: visible;
         }
-
+    
         .modal-content {
-            background: var(--dark);
-            border-radius: 16px;
+            background: var(--dark); /* White background */
+            border-radius: 8px;
             padding: 2rem;
             max-width: 500px;
             width: 90%;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1); /* Subtle border */
             position: relative;
             transform: translateY(30px);
             transition: transform 0.3s ease;
         }
-
+    
         .modal.active .modal-content {
             transform: translateY(0);
         }
-
+    
         .close-modal {
             position: absolute;
             top: 1rem;
             right: 1rem;
             background: transparent;
             border: none;
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--secondary); /* Dark gray text */
             font-size: 1.5rem;
             cursor: pointer;
             transition: color 0.3s ease;
         }
-
+    
         .close-modal:hover {
-            color: white;
+            color: var(--primary); /* Black text on hover */
         }
-
+    
         .winner-modal-content {
             text-align: center;
         }
-
+    
         .winner-modal-content h2 {
             font-size: 2rem;
             margin-bottom: 1rem;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            color: var(--primary); /* Black text */
         }
-
+    
         .winner-amount {
             font-size: 3rem;
             font-weight: 700;
-            color: var(--tertiary);
+            color: var(--primary); /* Black text */
             margin-bottom: 1rem;
         }
-
+    
         .winner-address {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.05); /* Light gray background */
             padding: 0.75rem;
             border-radius: 8px;
             font-family: monospace;
             margin-bottom: 2rem;
             word-break: break-all;
+            color: var(--primary); /* Black text */
         }
-
+    
         .confetti {
             position: absolute;
             width: 10px;
             height: 10px;
-            background-color: var(--primary);
+            background-color: var(--primary); /* Black confetti */
             border-radius: 50%;
             animation: confetti-fall 5s linear forwards;
         }
-
+    
         @keyframes confetti-fall {
             0% {
                 transform: translateY(-100vh) rotate(0deg);
@@ -501,45 +498,47 @@
                 opacity: 0;
             }
         }
-
+    
         .wallet-modal-content h2 {
             font-size: 1.75rem;
             margin-bottom: 1.5rem;
+            color: var(--primary); /* Black text */
             text-align: center;
         }
-
+    
         .wallet-options {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
-
+    
         .wallet-option {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.05); /* Light gray background */
             padding: 1rem;
             border-radius: 8px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
         }
-
+    
         .wallet-option:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.1); /* Darker gray on hover */
             transform: translateY(-2px);
         }
-
+    
         .wallet-option img {
             width: 40px;
             height: 40px;
             margin-bottom: 0.5rem;
         }
-
+    
         .wallet-option p {
             font-size: 0.875rem;
             font-weight: 600;
+            color: var(--primary); /* Black text */
         }
-
+    
         .particles-container {
             position: fixed;
             top: 0;
@@ -549,11 +548,11 @@
             pointer-events: none;
             z-index: -1;
         }
-
+    
         .pulse {
             animation: pulse 2s infinite;
         }
-
+    
         @keyframes pulse {
             0% {
                 transform: scale(1);
@@ -565,77 +564,77 @@
                 transform: scale(1);
             }
         }
-
+    
         /* Media Queries */
         @media (max-width: 768px) {
             h1 {
                 font-size: 2.5rem;
             }
-
+    
             .voting-options {
                 flex-direction: column;
                 align-items: center;
             }
-
+    
             .vote-btn {
                 width: 100%;
                 max-width: 300px;
             }
-
+    
             .history-header {
                 flex-direction: column;
                 gap: 1rem;
                 align-items: flex-start;
             }
-
+    
             .footer-content {
                 flex-direction: column;
                 align-items: center;
                 text-align: center;
             }
         }
-
+    
         .notification {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
+            background: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
+            color: var(--dark); /* White text */
             padding: 1rem;
             border-radius: 8px;
-            border-left: 4px solid var(--primary);
+            border-left: 4px solid var(--primary); /* Black accent */
             z-index: 1000;
             opacity: 0;
             transform: translateX(30px);
             transition: all 0.3s ease;
         }
-
+    
         .notification.show {
             opacity: 1;
             transform: translateX(0);
         }
-
+    
         .live-indicator {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            background: rgba(255, 51, 102, 0.2);
+            background: rgba(0, 0, 0, 0.1); /* Light gray background */
             padding: 0.25rem 0.75rem;
-            border-radius: 100px;
+            border-radius: 8px;
             margin-bottom: 1rem;
             width: fit-content;
             margin-left: auto;
             margin-right: auto;
         }
-
+    
         .live-dot {
             width: 8px;
             height: 8px;
-            background-color: var(--primary);
+            background-color: var(--primary); /* Black dot */
             border-radius: 50%;
             animation: blink 1.5s infinite;
         }
-
+    
         @keyframes blink {
             0%, 100% {
                 opacity: 1;
@@ -644,12 +643,13 @@
                 opacity: 0.3;
             }
         }
-
+    
         .live-text {
             font-size: 0.75rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
+            color: var(--primary); /* Black text */
         }
 
         .next-pool-estimate {
@@ -681,8 +681,13 @@
         <div class="container">
             <nav>
                 <div class="logo">
-                    <img src="/api/placeholder/40/40" alt="Rug Roulette Logo">
+                    <img src="5840d93d8c25635bc8b769988caf2a0f.png" alt="Rug Roulette Logo">
                     <span>RUG ROULETTE</span>
+                </div>
+                <div class="social-links">
+                    <a href="https://x.com/roulette_rug_"><i class="fab fa-twitter"></i></a>
+                    <a href="https://t.me/rugrouleette"><i class="fab fa-telegram"></i></a>
+                    <a href="https://pump.fun/profile/Fogr1yL8KQZi6o5vPHp1bu34Mtb7Enpsd1fhSj4FRX1U" class="buy-button">Buy $RUG</a>
                 </div>
                 <button class="connect-btn" id="connectWalletBtn">
                     <i class="fas fa-wallet"></i>
@@ -706,22 +711,22 @@
             <div class="stats-container">
                 <div class="stat-card pulse">
                     <h3>Current Pool</h3>
-                    <div class="pool-value value" id="poolValue">87.65 SOL</div>
-                    <div class="next-pool-estimate" id="estimatedPool">Estimated next: 94.22 SOL</div>
+                    <div class="pool-value value" id="poolValue">2.3 SOL</div>
+                    <div class="next-pool-estimate" id="estimatedPool">Estimated next: 5.22 SOL</div>
                 </div>
                 <div class="stat-card">
                     <h3>Time Until Next Vote</h3>
-                    <div class="time-remaining value" id="timeRemaining">47:21</div>
+                    <div class="time-remaining value" id="timeRemaining">10 MINUTES</div>
                 </div>
                 <div class="stat-card">
                     <h3>Active Participants</h3>
-                    <div class="participants value" id="participants">342</div>
+                    <div class="participants value" id="participants">5</div>
                 </div>
             </div>
 
             <div class="voting-section">
                 <div class="voting-header">
-                    <h2>Round #143 Voting</h2>
+                    <h2>Round #1 Voting</h2>
                     <p>Cast your vote before time runs out</p>
                 </div>
                 <div class="voting-options">
@@ -754,7 +759,7 @@
                 </div>
                 <div class="history-content" id="roundsHistory">
                     <div class="history-item">
-                        <div class="history-round">Round #142</div>
+                        <div class="history-round">Round #142 Example</div>
                         <div class="history-result hodl">
                             <i class="fas fa-handshake"></i>
                             HODL
@@ -762,7 +767,7 @@
                         <div class="history-amount">+6.57 SOL</div>
                     </div>
                     <div class="history-item">
-                        <div class="history-round">Round #141</div>
+                        <div class="history-round">Round #442 Example</div>
                         <div class="history-result hodl">
                             <i class="fas fa-handshake"></i>
                             HODL
@@ -770,7 +775,7 @@
                         <div class="history-amount">+5.83 SOL</div>
                     </div>
                     <div class="history-item">
-                        <div class="history-round">Round #140</div>
+                        <div class="history-round">Round #13 Example</div>
                         <div class="history-result rug">
                             <i class="fas fa-bomb"></i>
                             RUG
@@ -778,7 +783,7 @@
                         <div class="history-amount">75.25 SOL</div>
                     </div>
                     <div class="history-item">
-                        <div class="history-round">Round #139</div>
+                        <div class="history-round">Round #1534 Example</div>
                         <div class="history-result hodl">
                             <i class="fas fa-handshake"></i>
                             HODL
@@ -786,7 +791,7 @@
                         <div class="history-amount">+4.27 SOL</div>
                     </div>
                     <div class="history-item">
-                        <div class="history-round">Round #138</div>
+                        <div class="history-round">Round #65 Example</div>
                         <div class="history-result hodl">
                             <i class="fas fa-handshake"></i>
                             HODL
@@ -794,7 +799,7 @@
                         <div class="history-amount">+3.98 SOL</div>
                     </div>
                     <div class="history-item">
-                        <div class="history-round">Round #137</div>
+                        <div class="history-round">Round #44 Example</div>
                         <div class="history-result hodl">
                             <i class="fas fa-handshake"></i>
                             HODL
@@ -804,7 +809,7 @@
                 </div>
                 <div class="history-content" id="winnersHistory" style="display: none;">
                     <div class="history-item">
-                        <div class="history-round">Round #140</div>
+                        <div class="history-round">Round #99</div>
                         <div class="history-result rug">
                             <i class="fas fa-bomb"></i>
                             RUG
@@ -856,9 +861,8 @@
                     <a href="#">Privacy</a>
                 </div>
                 <div class="social-links">
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-discord"></i></a>
-                    <a href="#"><i class="fab fa-telegram"></i></a>
+                    <a href="https://x.com/roulette_rug_"><i class="fab fa-twitter"></i></a>
+                    <a href="https://t.me/rugrouleette"><i class="fab fa-telegram"></i></a>
                 </div>
             </div>
         </div>
@@ -884,20 +888,16 @@
             <h2>Connect Wallet</h2>
             <div class="wallet-options">
                 <div class="wallet-option" id="phantomWallet">
-                    <img src="/api/placeholder/40/40" alt="Phantom Wallet">
+                    <img src="White Ghost_docs_nu.svg" alt="Phantom Wallet">
                     <p>Phantom</p>
                 </div>
                 <div class="wallet-option">
-                    <img src="/api/placeholder/40/40" alt="Solflare Wallet">
+                    <img src="unnamed (1).png" alt="Solflare Wallet">
                     <p>Solflare</p>
                 </div>
                 <div class="wallet-option">
-                    <img src="/api/placeholder/40/40" alt="Backpack">
+                    <img src="unnamed (3).png" alt="Backpack">
                     <p>Backpack</p>
-                </div>
-                <div class="wallet-option">
-                    <img src="/api/placeholder/40/40" alt="Sollet">
-                    <p>Sollet</p>
                 </div>
             </div>
         </div>
@@ -935,10 +935,10 @@
     rug: 103,
     hodl: 239
     };
-    let totalPoolValue = 87.65;
+    let totalPoolValue = 3.65;
     let currentRound = 143;
-    let timeRemainingSeconds = 2841; // 47 minutes 21 seconds
-    let participantsCount = 342;
+    let timeRemainingSeconds = 641; // 47 minutes 21 seconds
+    let participantsCount = 12;
 
     // Create background particles
     function createParticles() {
