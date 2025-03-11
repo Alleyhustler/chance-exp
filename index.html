@@ -907,182 +907,336 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     
     <script>
-    // DOM Elements
-    const connectWalletBtn = document.getElementById('connectWalletBtn');
-    const walletModal = document.getElementById('walletModal');
-    const closeWalletModal = document.getElementById('closeWalletModal');
-    const phantomWallet = document.getElementById('phantomWallet');
-    const winnerModal = document.getElementById('winnerModal');
-    const closeWinnerModal = document.getElementById('closeWinnerModal');
-    const notification = document.getElementById('notification');
-    const rugBtn = document.getElementById('rugBtn');
-    const hodlBtn = document.getElementById('hodlBtn');
-    const voteBar = document.getElementById('voteBar');
-    const rugPercentage = document.getElementById('rugPercentage');
-    const hodlPercentage = document.getElementById('hodlPercentage');
-    const tabs = document.querySelectorAll('.tab');
-    const historyContents = document.querySelectorAll('.history-content');
-    const timeRemaining = document.getElementById('timeRemaining');
-    const poolValue = document.getElementById('poolValue');
-    const participants = document.getElementById('participants');
-    const estimatedPool = document.getElementById('estimatedPool');
-    const particles = document.getElementById('particles');
+// DOM Elements
+const connectWalletBtn = document.getElementById('connectWalletBtn');
+const walletModal = document.getElementById('walletModal');
+const closeWalletModal = document.getElementById('closeWalletModal');
+const phantomWallet = document.getElementById('phantomWallet');
+const winnerModal = document.getElementById('winnerModal');
+const closeWinnerModal = document.getElementById('closeWinnerModal');
+const notification = document.getElementById('notification');
+const rugBtn = document.getElementById('rugBtn');
+const hodlBtn = document.getElementById('hodlBtn');
+const voteBar = document.getElementById('voteBar');
+const rugPercentage = document.getElementById('rugPercentage');
+const hodlPercentage = document.getElementById('hodlPercentage');
+const tabs = document.querySelectorAll('.tab');
+const historyContents = document.querySelectorAll('.history-content');
+const timeRemaining = document.getElementById('timeRemaining');
+const poolValue = document.getElementById('poolValue');
+const participants = document.getElementById('participants');
+const estimatedPool = document.getElementById('estimatedPool');
+const particles = document.getElementById('particles');
 
-    // State
-    let walletConnected = false;
-    let userVoted = false;
-    let currentVotes = {
+// State
+let walletConnected = false;
+let userVoted = false;
+let currentVotes = {
     rug: 103,
     hodl: 239
-    };
-    let totalPoolValue = 87.65;
-    let currentRound = 143;
-    let timeRemainingSeconds = 2841; // 47 minutes 21 seconds
-    let participantsCount = 342;
+};
+let totalPoolValue = 87.65;
+let currentRound = 143;
+let timeRemainingSeconds = 2841; // 47 minutes 21 seconds
+let participantsCount = 342;
 
-    // Create background particles
-    function createParticles() {
+// Create background particles
+function createParticles() {
     for (let i = 0; i < 50; i++) {
         const particle = document.createElement('div');
         particle.classList.add('particle');
-
+        
         // Random position
         const posX = Math.random() * window.innerWidth;
         const posY = Math.random() * window.innerHeight;
-
+        
         // Random size
-        const size = Math.random() * 5 + 2; // Between 2px and 7px
-
-        // Random animation duration
-        const duration = Math.random() * 5 + 2; // Between 2 and 7 seconds
-
+        const size = Math.random() * 3 + 1;
+        
+        // Apply styles
         particle.style.left = `${posX}px`;
         particle.style.top = `${posY}px`;
         particle.style.width = `${size}px`;
         particle.style.height = `${size}px`;
-        particle.style.animationDuration = `${duration}s`;
-
+        particle.style.opacity = Math.random() * 0.5 + 0.1;
+        
+        // Random animation
+        const animationDuration = Math.random() * 50 + 30;
+        particle.style.animation = `particle-float ${animationDuration}s infinite linear`;
+        
+        // Random delay
+        particle.style.animationDelay = `${Math.random() * 10}s`;
+        
+        // Append to container
         particles.appendChild(particle);
     }
-    }
+}
 
-    // Update voting progress bar
-    function updateVoteProgress() {
+// Update vote percentages
+function updateVotePercentages() {
     const totalVotes = currentVotes.rug + currentVotes.hodl;
-    const rugPercent = (currentVotes.rug / totalVotes) * 100;
-    const hodlPercent = (currentVotes.hodl / totalVotes) * 100;
-
+    const rugPercent = Math.round((currentVotes.rug / totalVotes) * 100);
+    const hodlPercent = 100 - rugPercent;
+    
     voteBar.style.width = `${rugPercent}%`;
-    rugPercentage.textContent = `RUG: ${rugPercent.toFixed(1)}%`;
-    hodlPercentage.textContent = `HODL: ${hodlPercent.toFixed(1)}%`;
-    }
+    rugPercentage.textContent = `RUG: ${rugPercent}%`;
+    hodlPercentage.textContent = `HODL: ${hodlPercent}%`;
+}
 
-    // Update countdown timer
-    function updateTimer() {
-    const hours = Math.floor(timeRemainingSeconds / 3600);
-    const minutes = Math.floor((timeRemainingSeconds % 3600) / 60);
-    const seconds = timeRemainingSeconds % 60;
+// Format time
+function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+}
 
-    timeRemaining.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-
+// Update timer
+function updateTimer() {
     if (timeRemainingSeconds > 0) {
         timeRemainingSeconds--;
+        timeRemaining.textContent = formatTime(timeRemainingSeconds);
+        
+        // Simulate random participant joins
+        if (Math.random() < 0.1) {
+            participantsCount += Math.floor(Math.random() * 3) + 1;
+            participants.textContent = participantsCount;
+        }
+        
+        // Simulate pool growth
+        if (Math.random() < 0.05) {
+            totalPoolValue += Math.random() * 0.1;
+            poolValue.textContent = totalPoolValue.toFixed(2) + " SOL";
+            estimatedPool.textContent = "Estimated next: " + (totalPoolValue * 1.075).toFixed(2) + " SOL";
+        }
     } else {
-        // Reset timer for next round
-        timeRemainingSeconds = 3600; // 1 hour
-        currentRound++;
+        // Round ended, determine result
+        const rugWon = currentVotes.rug > currentVotes.hodl;
+        
+        if (rugWon) {
+            showWinnerModal();
+        } else {
+            // HODL won, reset for next round
+            resetRound();
+            showNotification("HODL won! The pot grows bigger.");
+        }
     }
-    }
+}
 
-    // Update pool value and participants
-    function updateStats() {
-    poolValue.textContent = `${totalPoolValue.toFixed(2)} SOL`;
-    participants.textContent = participantsCount;
-    estimatedPool.textContent = `Estimated next: ${(totalPoolValue * 1.075).toFixed(2)} SOL`;
-    }
+// Reset round for next hour
+function resetRound() {
+    currentRound++;
+    timeRemainingSeconds = 3600; // 1 hour
+    userVoted = false;
+    rugBtn.classList.remove('active');
+    hodlBtn.classList.remove('active');
+    
+    // Adjust votes for next round
+    currentVotes = {
+        rug: Math.floor(Math.random() * 50) + 50,
+        hodl: Math.floor(Math.random() * 150) + 150
+    };
+    
+    updateVotePercentages();
+    
+    // Update UI
+    document.querySelector('.voting-header h2').textContent = `Round #${currentRound} Voting`;
+}
 
-    // Handle wallet connection
-    function connectWallet() {
-    walletConnected = true;
-    notification.textContent = "Connected successfully!";
+// Show notification
+function showNotification(message) {
+    notification.textContent = message;
     notification.classList.add('show');
-
+    
     setTimeout(() => {
         notification.classList.remove('show');
     }, 3000);
+}
+
+// Generate confetti for winner modal
+function generateConfetti() {
+    const modalContent = document.querySelector('.winner-modal-content');
+    
+    for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        
+        // Random position, color and delay
+        confetti.style.left = `${Math.random() * 100}%`;
+        confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+        confetti.style.animationDelay = `${Math.random() * 2}s`;
+        
+        modalContent.appendChild(confetti);
     }
+}
 
-    // Handle voting
-    function handleVote(voteType) {
-    if (!walletConnected) {
-        notification.textContent = "Please connect your wallet first!";
-        notification.classList.add('show');
-
-        setTimeout(() => {
-        notification.classList.remove('show');
-        }, 3000);
-        return;
-    }
-
-    if (userVoted) {
-        notification.textContent = "You've already voted!";
-        notification.classList.add('show');
-
-        setTimeout(() => {
-        notification.classList.remove('show');
-        }, 3000);
-        return;
-    }
-
-    userVoted = true;
-    currentVotes[voteType]++;
-    updateVoteProgress();
-
-    notification.textContent = `Voted ${voteType.toUpperCase()} successfully!`;
-    notification.classList.add('show');
-
-    setTimeout(() => {
-        notification.classList.remove('show');
-    }, 3000);
-    }
-
-    // Handle tab switching
-    tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-        tabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-
-        historyContents.forEach(content => {
-        content.style.display = 'none';
-        });
-
-        document.getElementById(`${tab.dataset.tab}History`).style.display = 'block';
-    });
-    });
-
-    // Event listeners
-    connectWalletBtn.addEventListener('click', () => {
-    walletModal.style.display = 'flex';
-    });
-
-    closeWalletModal.addEventListener('click', () => {
-    walletModal.style.display = 'none';
-    });
-
-    phantomWallet.addEventListener('click', () => {
-    connectWallet();
-    walletModal.style.display = 'none';
-    });
-
-    rugBtn.addEventListener('click', () => handleVote('rug'));
-    hodlBtn.addEventListener('click', () => handleVote('hodl'));
-
+// Show winner modal
+function showWinnerModal() {
+    winnerModal.classList.add('active');
+    generateConfetti();
+    
+    // Reset confetti when modal closes
     closeWinnerModal.addEventListener('click', () => {
-    winnerModal.style.display = 'none';
-    });
+        document.querySelectorAll('.confetti').forEach(el => el.remove());
+        resetRound();
+    }, { once: true });
+}
 
-    // Initialize
-    createParticles();
-    updateVoteProgress();
-    updateStats();
+// Connect wallet function
+function connectWallet() {
+    if (walletConnected) {
+        return;
+    }
+    
+    walletModal.classList.add('active');
+}
+
+// Initialize pool chart
+function initPoolChart() {
+    const ctx = document.createElement('canvas');
+    document.getElementById('poolChart').appendChild(ctx);
+    
+    // Sample data for pool growth
+    const labels = Array.from({length: 30}, (_, i) => `#${currentRound - 30 + i}`);
+    const data = Array.from({length: 30}, (_, i) => {
+        // Simulate pool growth with occasional resets (rugs)
+        const baseValue = 20 + i * 1.5;
+        return i % 7 === 6 ? 15 : baseValue;
+    });
+    
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Pool Size (SOL)',
+                data: data,
+                borderColor: '#00E0FF',
+                backgroundColor: 'rgba(0, 224, 255, 0.1)',
+                tension: 0.3,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.05)'
+                    },
+                    ticks: {
+                        color: 'rgba(255, 255, 255, 0.7)'
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        maxRotation: 0,
+                        autoSkip: true,
+                        maxTicksLimit: 10
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Event Listeners
+connectWalletBtn.addEventListener('click', connectWallet);
+
+closeWalletModal.addEventListener('click', () => {
+    walletModal.classList.remove('active');
+});
+
+closeWinnerModal.addEventListener('click', () => {
+    winnerModal.classList.remove('active');
+});
+
+// Phantom wallet connection
+phantomWallet.addEventListener('click', () => {
+    // Simulate connection
+    setTimeout(() => {
+        walletConnected = true;
+        connectWalletBtn.innerHTML = '<i class="fas fa-wallet"></i> HNm4...xP2';
+        connectWalletBtn.classList.add('connected');
+        walletModal.classList.remove('active');
+        showNotification("Wallet connected successfully!");
+    }, 800);
+});
+
+// Vote buttons
+rugBtn.addEventListener('click', () => {
+    if (!walletConnected) {
+        showNotification("Please connect your wallet first");
+        connectWallet();
+        return;
+    }
+    
+    if (userVoted) {
+        showNotification("You've already voted in this round");
+        return;
+    }
+    
+    rugBtn.classList.add('active');
+    hodlBtn.classList.remove('active');
+    currentVotes.rug++;
+    userVoted = true;
+    updateVotePercentages();
+    showNotification("Vote cast: RUG");
+});
+
+hodlBtn.addEventListener('click', () => {
+    if (!walletConnected) {
+        showNotification("Please connect your wallet first");
+        connectWallet();
+        return;
+    }
+    
+    if (userVoted) {
+        showNotification("You've already voted in this round");
+        return;
+    }
+    
+    hodlBtn.classList.add('active');
+    rugBtn.classList.remove('active');
+    currentVotes.hodl++;
+    userVoted = true;
+    updateVotePercentages();
+    showNotification("Vote cast: HODL");
+});
+
+// Tab switching
+tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        // Remove active class from all tabs
+        tabs.forEach(t => t.classList.remove('active'));
+        
+        // Add active class to clicked tab
+        tab.classList.add('active');
+        
+        // Hide all content sections
+        historyContents.forEach(content => {
+            content.style.display = 'none';
+        });
+        
+        // Show selected content
+        const targetContent = document.getElementById(`${tab.dataset.tab}History`);
+        targetContent.style.display = 'block';
+    });
+});
+
+// Initialize
+window.addEventListener('DOMContentLoaded', () => {
+    updateVotePercentages();
     setInterval(updateTimer, 1000);
+    createParticles();
+    initPoolChart();
+});
