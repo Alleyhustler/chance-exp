@@ -907,48 +907,182 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     
     <script>
-        // DOM Elements
-        const connectWalletBtn = document.getElementById('connectWalletBtn');
-        const walletModal = document.getElementById('walletModal');
-        const closeWalletModal = document.getElementById('closeWalletModal');
-        const phantomWallet = document.getElementById('phantomWallet');
-        const winnerModal = document.getElementById('winnerModal');
-        const closeWinnerModal = document.getElementById('closeWinnerModal');
-        const notification = document.getElementById('notification');
-        const rugBtn = document.getElementById('rugBtn');
-        const hodlBtn = document.getElementById('hodlBtn');
-        const voteBar = document.getElementById('voteBar');
-        const rugPercentage = document.getElementById('rugPercentage');
-        const hodlPercentage = document.getElementById('hodlPercentage');
-        const tabs = document.querySelectorAll('.tab');
-        const historyContents = document.querySelectorAll('.history-content');
-        const timeRemaining = document.getElementById('timeRemaining');
-        const poolValue = document.getElementById('poolValue');
-        const participants = document.getElementById('participants');
-        const estimatedPool = document.getElementById('estimatedPool');
-        const particles = document.getElementById('particles');
+    // DOM Elements
+    const connectWalletBtn = document.getElementById('connectWalletBtn');
+    const walletModal = document.getElementById('walletModal');
+    const closeWalletModal = document.getElementById('closeWalletModal');
+    const phantomWallet = document.getElementById('phantomWallet');
+    const winnerModal = document.getElementById('winnerModal');
+    const closeWinnerModal = document.getElementById('closeWinnerModal');
+    const notification = document.getElementById('notification');
+    const rugBtn = document.getElementById('rugBtn');
+    const hodlBtn = document.getElementById('hodlBtn');
+    const voteBar = document.getElementById('voteBar');
+    const rugPercentage = document.getElementById('rugPercentage');
+    const hodlPercentage = document.getElementById('hodlPercentage');
+    const tabs = document.querySelectorAll('.tab');
+    const historyContents = document.querySelectorAll('.history-content');
+    const timeRemaining = document.getElementById('timeRemaining');
+    const poolValue = document.getElementById('poolValue');
+    const participants = document.getElementById('participants');
+    const estimatedPool = document.getElementById('estimatedPool');
+    const particles = document.getElementById('particles');
 
-        // State
-        let walletConnected = false;
-        let userVoted = false;
-        let currentVotes = {
-            rug: 103,
-            hodl: 239
-        };
-        let totalPoolValue = 87.65;
-        let currentRound = 143;
-        let timeRemainingSeconds = 2841; // 47 minutes 21 seconds
-        let participantsCount = 342;
+    // State
+    let walletConnected = false;
+    let userVoted = false;
+    let currentVotes = {
+    rug: 103,
+    hodl: 239
+    };
+    let totalPoolValue = 87.65;
+    let currentRound = 143;
+    let timeRemainingSeconds = 2841; // 47 minutes 21 seconds
+    let participantsCount = 342;
 
-        // Create background particles
-        function createParticles() {
-            for (let i = 0; i < 50; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                
-                // Random position
-                const posX = Math.random() * window.innerWidth;
-                const posY = Math.random() * window.innerHeight;
-                
-                // Random size
-                const size =
+    // Create background particles
+    function createParticles() {
+    for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+
+        // Random position
+        const posX = Math.random() * window.innerWidth;
+        const posY = Math.random() * window.innerHeight;
+
+        // Random size
+        const size = Math.random() * 5 + 2; // Between 2px and 7px
+
+        // Random animation duration
+        const duration = Math.random() * 5 + 2; // Between 2 and 7 seconds
+
+        particle.style.left = `${posX}px`;
+        particle.style.top = `${posY}px`;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.animationDuration = `${duration}s`;
+
+        particles.appendChild(particle);
+    }
+    }
+
+    // Update voting progress bar
+    function updateVoteProgress() {
+    const totalVotes = currentVotes.rug + currentVotes.hodl;
+    const rugPercent = (currentVotes.rug / totalVotes) * 100;
+    const hodlPercent = (currentVotes.hodl / totalVotes) * 100;
+
+    voteBar.style.width = `${rugPercent}%`;
+    rugPercentage.textContent = `RUG: ${rugPercent.toFixed(1)}%`;
+    hodlPercentage.textContent = `HODL: ${hodlPercent.toFixed(1)}%`;
+    }
+
+    // Update countdown timer
+    function updateTimer() {
+    const hours = Math.floor(timeRemainingSeconds / 3600);
+    const minutes = Math.floor((timeRemainingSeconds % 3600) / 60);
+    const seconds = timeRemainingSeconds % 60;
+
+    timeRemaining.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+    if (timeRemainingSeconds > 0) {
+        timeRemainingSeconds--;
+    } else {
+        // Reset timer for next round
+        timeRemainingSeconds = 3600; // 1 hour
+        currentRound++;
+    }
+    }
+
+    // Update pool value and participants
+    function updateStats() {
+    poolValue.textContent = `${totalPoolValue.toFixed(2)} SOL`;
+    participants.textContent = participantsCount;
+    estimatedPool.textContent = `Estimated next: ${(totalPoolValue * 1.075).toFixed(2)} SOL`;
+    }
+
+    // Handle wallet connection
+    function connectWallet() {
+    walletConnected = true;
+    notification.textContent = "Connected successfully!";
+    notification.classList.add('show');
+
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 3000);
+    }
+
+    // Handle voting
+    function handleVote(voteType) {
+    if (!walletConnected) {
+        notification.textContent = "Please connect your wallet first!";
+        notification.classList.add('show');
+
+        setTimeout(() => {
+        notification.classList.remove('show');
+        }, 3000);
+        return;
+    }
+
+    if (userVoted) {
+        notification.textContent = "You've already voted!";
+        notification.classList.add('show');
+
+        setTimeout(() => {
+        notification.classList.remove('show');
+        }, 3000);
+        return;
+    }
+
+    userVoted = true;
+    currentVotes[voteType]++;
+    updateVoteProgress();
+
+    notification.textContent = `Voted ${voteType.toUpperCase()} successfully!`;
+    notification.classList.add('show');
+
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 3000);
+    }
+
+    // Handle tab switching
+    tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        historyContents.forEach(content => {
+        content.style.display = 'none';
+        });
+
+        document.getElementById(`${tab.dataset.tab}History`).style.display = 'block';
+    });
+    });
+
+    // Event listeners
+    connectWalletBtn.addEventListener('click', () => {
+    walletModal.style.display = 'flex';
+    });
+
+    closeWalletModal.addEventListener('click', () => {
+    walletModal.style.display = 'none';
+    });
+
+    phantomWallet.addEventListener('click', () => {
+    connectWallet();
+    walletModal.style.display = 'none';
+    });
+
+    rugBtn.addEventListener('click', () => handleVote('rug'));
+    hodlBtn.addEventListener('click', () => handleVote('hodl'));
+
+    closeWinnerModal.addEventListener('click', () => {
+    winnerModal.style.display = 'none';
+    });
+
+    // Initialize
+    createParticles();
+    updateVoteProgress();
+    updateStats();
+    setInterval(updateTimer, 1000);
