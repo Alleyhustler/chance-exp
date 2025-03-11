@@ -1173,70 +1173,71 @@
     }, 800);
     });
 
-    // Vote buttons
-    rugBtn.addEventListener('click', () => {
-    if (!walletConnected) {
-        showNotification("Please connect your wallet first");
-        connectWallet();
-        return;
-    }
+// Vote buttons
+rugBtn.addEventListener('click', () => {
+  if (!walletConnected) {
+    showNotification("Please connect your wallet first");
+    connectWallet();
+    return;
+  }
 
-    if (userVoted) {
-        showNotification("You've already voted in this round");
-        return;
-    }
+  if (userVoted) {
+    showNotification("You've already voted in this round");
+    return;
+  }
 
-    rugBtn.classList.add('active');
-    hodlBtn.classList.remove('active');
-    currentVotes.rug++;
-    userVoted = true;
-    updateVotePercentages();
-    showNotification("Vote cast: RUG");
+  rugBtn.classList.add('active');
+  hodlBtn.classList.remove('active');
+  currentVotes.rug++;
+  userVoted = true;
+  updateVotePercentages();
+  showNotification("Vote cast: RUG");
+});
+
+hodlBtn.addEventListener('click', () => {
+  if (!walletConnected) {
+    showNotification("Please connect your wallet first");
+    connectWallet();
+    return;
+  }
+
+  if (userVoted) {
+    showNotification("You've already voted in this round");
+    return;
+  }
+
+  hodlBtn.classList.add('active');
+  rugBtn.classList.remove('active');
+  currentVotes.hodl++;
+  userVoted = true;
+  updateVotePercentages();
+  showNotification("Vote cast: HODL");
+});
+
+// Tab switching
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    // Remove active class from all tabs
+    tabs.forEach(t => t.classList.remove('active'));
+
+    // Add active class to clicked tab
+    tab.classList.add('active');
+
+    // Hide all content sections
+    historyContents.forEach(content => {
+      content.style.display = 'none';
     });
 
-    hodlBtn.addEventListener('click', () => {
-    if (!walletConnected) {
-        showNotification("Please connect your wallet first");
-        connectWallet();
-        return;
-    }
+    // Show selected content
+    const targetContent = document.getElementById(`${tab.dataset.tab}History`);
+    targetContent.style.display = 'block';
+  });
+});
 
-    if (userVoted) {
-        showNotification("You've already voted in this round");
-        return;
-    }
-
-    hodlBtn.classList.add('active');
-    rugBtn.classList.remove('active');
-    currentVotes.hodl++;
-    userVoted = true;
-    updateVotePercentages();
-    showNotification("Vote cast: HODL");
-    });
-
-    // Tab switching
-    tabs.forEach(tab => {
-    tab.addEventListener('click', () => 
-        // Remove active class from all tabs
-        tabs.forEach(t => t.classList.remove('active'));
-
-        // Add active class to clicked tab
-        tab.classList.add('active'));
-
-        // Hide all content sections
-        historyContents.forEach(content => {
-        content.style.display = 'none';
-        });
-
-        // Show selected content
-        const targetContent = document.getElementById(`${tab.dataset.tab}History`);
-        targetContent.style.display = 'block';
-    });
-
-    // Initialize
-    window.addEventListener('DOMContentLoaded', () => {
-    updateVotePercentages();
-    setInterval(updateTimer, 1000);
-    createParticles();
-    initPoolChart();
-    });
+// Initialize
+window.addEventListener('DOMContentLoaded', () => {
+  updateVotePercentages();
+  setInterval(updateTimer, 1000);
+  createParticles();
+  initPoolChart();
+});
