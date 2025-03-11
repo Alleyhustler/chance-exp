@@ -673,6 +673,8 @@
     </style>
 </head>
 <body>
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+    <script src="https://unpkg.com/@phantom-labs/inject-sdk@latest/dist/inject-sdk.min.js"></script>
     <div class="particles-container" id="particles"></div>
 
     <header>
@@ -1161,16 +1163,38 @@
     winnerModal.classList.remove('active');
     });
 
+    function connectWallet() {
+    if (!window.solana || !window.solana.isPhantom) {
+        showNotification("Phantom Wallet is not installed. Please install it first.");
+        return;
+    }
+
+    walletModal.classList.add('active');
+    }
+
     // Phantom wallet connection
-    phantomWallet.addEventListener('click', () => {
-    // Simulate connection
-    setTimeout(() => {
+    phantomWallet.addEventListener('click', async () => {
+    try {
+        // Check if Phantom is installed
+        if (!window.solana || !window.solana.isPhantom) {
+        showNotification("Phantom Wallet is not installed. Please install it first.");
+        return;
+        }
+
+        // Connect to Phantom
+        const provider = window.solana;
+        await provider.connect();
+
+        // Update UI
         walletConnected = true;
-        connectWalletBtn.innerHTML = '<i class="fas fa-wallet"></i> HNm4...xP2';
+        connectWalletBtn.innerHTML = `<i class="fas fa-wallet"></i> ${provider.publicKey.toString().slice(0, 4)}...${provider.publicKey.toString().slice(-4)}`;
         connectWalletBtn.classList.add('connected');
         walletModal.classList.remove('active');
         showNotification("Wallet connected successfully!");
-    }, 800);
+    } catch (error) {
+        console.error("Error connecting to Phantom Wallet:", error);
+        showNotification("Failed to connect to Phantom Wallet.");
+    }
     });
 
 // Vote buttons
